@@ -1,0 +1,125 @@
+// This is your Prisma schema file
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model with Auth0 integration
+model User {
+  id            String    @id @default(cuid())
+  auth0Id       String    @unique
+  email         String    @unique
+  name          String?
+  role          UserRole  @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  properties    Property[]
+  organizations Organization[]
+}
+
+enum UserRole {
+  ADMIN
+  PROPERTY_MANAGER
+  OWNER
+  TENANT
+  USER
+}
+
+// Organization for multi-tenant support
+model Organization {
+  id          String    @id @default(cuid())
+  name        String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  users       User[]
+  properties  Property[]
+}
+
+// Property model
+model Property {
+  id              String    @id @default(cuid())
+  name            String
+  address         String
+  organizationId  String
+  organization    Organization @relation(fields: [organizationId], references: [id])
+  managerId       String
+  manager         User      @relation(fields: [managerId], references: [id])
+  units           Unit[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+// Unit within a property
+model Unit {
+  id          String    @id @default(cuid())
+  number      String
+  propertyId  String
+  property    Property  @relation(fields: [propertyId], references: [id])
+  leases      Lease[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// Lease model
+model Lease {
+  id          String    @id @default(cuid())
+  unitId      String
+  unit        Unit      @relation(fields: [unitId], references: [id])
+  startDate   DateTime
+  endDate     DateTime
+  rentAmount  Float
+  status      LeaseStatus @default(ACTIVE)
+  documents   Document[]
+  payments    Payment[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+enum LeaseStatus {
+  DRAFT
+  ACTIVE
+  EXPIRED
+  TERMINATED
+}
+
+// Document model for lease agreements and other files
+model Document {
+  id          String    @id @default(cuid())
+  leaseId     String
+  lease       Lease     @relation(fields: [leaseId], references: [id])
+  name        String
+  type        String
+  url         String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// Payment model
+model Payment {
+  id          String    @id @default(cuid())
+  leaseId     String
+  lease       Lease     @relation(fields: [leaseId], references: [id])
+  amount      Float
+  status      PaymentStatus @default(PENDING)
+  type        PaymentType
+  txHash      String?   // For blockchain transactions
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum PaymentType {
+  STRIPE
+  CRYPTO
+  BANK_TRANSFER
+}
