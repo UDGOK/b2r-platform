@@ -56,7 +56,7 @@ export default function Pricing() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black to-gray-900 pt-24">
+    <div className="min-h-screen bg-gradient-to-b from-black to-gray-900 pt-20">
       {/* Header */}
       <div className="text-center mb-16">
         <motion.h1
