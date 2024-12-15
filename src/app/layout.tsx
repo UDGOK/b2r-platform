@@ -21,7 +21,7 @@ export default function RootLayout({
                 <Navigation />
               </div>
             </header>
-            <main className="pt-20">{children}</main>
+            <main className="pt-16">{children}</main>
           </UserProvider>
         </StoreProvider>
       </body>
