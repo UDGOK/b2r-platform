@@ -43,15 +43,19 @@ export default function HomeAssistant() {
         'Content-Type': 'application/json',
       },
     })
-      .then((response) => {
-        if (!response.ok) throw new Error('Failed to connect to Home Assistant');
+      .then(async (response) => {
+        if (!response.ok) {
+          const text = await response.text();
+          console.error('Home Assistant response:', text);
+          throw new Error(`Failed to connect to Home Assistant: ${response.status}`);
+        }
         // If successful, set up the authenticated URL
         setHaUrl(`${HOME_ASSISTANT_URL}?auth_callback=1&access_token=${HA_TOKEN}`);
         setError(null);
       })
       .catch((err) => {
         console.error('Home Assistant connection error:', err);
-        setError('Unable to connect to Home Assistant. Please check if it\'s running and accessible.');
+        setError(`Unable to connect to Home Assistant. Error: ${err.message}`);
       });
   }, []);
 
@@ -74,13 +78,26 @@ export default function HomeAssistant() {
         
         {error && (
           <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded-lg mb-6">
-            {error}
-            <p className="text-sm mt-2">
-              Make sure:
-              1. Home Assistant is running at {HOME_ASSISTANT_URL}
-              2. The access token is correctly configured
-              3. CORS is enabled in your Home Assistant configuration
-            </p>
+            <p className="font-semibold">{error}</p>
+            <div className="text-sm mt-2">
+              <p className="font-medium mb-1">Troubleshooting steps:</p>
+              <ol className="list-decimal list-inside space-y-1">
+                <li>Verify Home Assistant is running at {HOME_ASSISTANT_URL}</li>
+                <li>Check if the access token is correctly configured in .env.local</li>
+                <li>Add this to your Home Assistant configuration.yaml:
+                  <pre className="mt-1 bg-black/30 p-2 rounded text-xs overflow-x-auto">
+                    {`http:
+  cors_allowed_origins:
+    - http://localhost:3000
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 127.0.0.1
+    - ::1`}
+                  </pre>
+                </li>
+                <li>Restart Home Assistant after making these changes</li>
+              </ol>
+            </div>
           </div>
         )}
 
