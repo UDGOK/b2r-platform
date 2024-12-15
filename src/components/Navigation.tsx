@@ -45,119 +45,67 @@ export default function Navigation() {
 
       {/* Desktop Menu */}
       <div className="hidden lg:flex items-center space-x-8">
-        <div className="relative group">
-          <button className="text-white hover:text-blue-500 transition-colors py-2">
-            Property Management
-          </button>
-          <div className="absolute top-full left-0 hidden group-hover:block bg-black/90 backdrop-blur-lg rounded-lg p-4 w-64">
-            <Link
-              href="/property-management/lease"
-              className="block px-4 py-2 text-white hover:text-blue-500 transition-colors"
-            >
-              Lease Management
-            </Link>
-            <Link
-              href="/property-management/maintenance"
-              className="block px-4 py-2 text-white hover:text-blue-500 transition-colors"
-            >
-              Maintenance
-            </Link>
-            <Link
-              href="/property-management/analytics"
-              className="block px-4 py-2 text-white hover:text-blue-500 transition-colors"
-            >
-              Analytics
-            </Link>
-          </div>
-        </div>
-        <Link
-          href="/pricing"
-          className="text-white hover:text-blue-500 transition-colors"
-        >
-          Pricing
-        </Link>
+        {user && (
+          <Link 
+            href="/management" 
+            className="text-white hover:text-blue-500 transition-colors"
+          >
+            Management Portal
+          </Link>
+        )}
         {!isLoading && (
           <>
             {user ? (
-              <Link
+              <a
                 href="/api/auth/logout"
-                className="px-6 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
+                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
               >
                 Logout
-              </Link>
+              </a>
             ) : (
-              <Link
+              <a
                 href="/api/auth/login"
-                className="px-6 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
               >
-                Get Started
-              </Link>
+                Login
+              </a>
             )}
           </>
         )}
       </div>
 
       {/* Mobile Menu */}
-      <div
-        className={`lg:hidden fixed inset-x-0 top-20 bg-black/90 backdrop-blur-lg transition-all duration-300 ${
-          isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
-        }`}
-      >
-        <div className="container mx-auto px-4 py-4">
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <div className="font-semibold text-white px-4">
-                Property Management
-              </div>
-              <Link
-                href="/property-management/lease"
-                className="block px-4 py-2 text-gray-300 hover:text-blue-500 transition-colors"
-              >
-                Lease Management
-              </Link>
-              <Link
-                href="/property-management/maintenance"
-                className="block px-4 py-2 text-gray-300 hover:text-blue-500 transition-colors"
-              >
-                Maintenance
-              </Link>
-              <Link
-                href="/property-management/analytics"
-                className="block px-4 py-2 text-gray-300 hover:text-blue-500 transition-colors"
-              >
-                Analytics
-              </Link>
-            </div>
-            <Link
-              href="/pricing"
-              className="block px-4 py-2 text-gray-300 hover:text-blue-500 transition-colors"
+      {isMobileMenuOpen && (
+        <div className="lg:hidden absolute top-20 left-0 right-0 bg-gray-900 py-4 px-6 space-y-4">
+          {user && (
+            <Link 
+              href="/management"
+              className="block text-white hover:text-blue-500 transition-colors"
             >
-              Pricing
+              Management Portal
             </Link>
-            <div className="px-4">
-              {!isLoading && (
-                <>
-                  {user ? (
-                    <Link
-                      href="/api/auth/logout"
-                      className="inline-block px-6 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
-                    >
-                      Logout
-                    </Link>
-                  ) : (
-                    <Link
-                      href="/api/auth/login"
-                      className="inline-block px-6 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
-                    >
-                      Get Started
-                    </Link>
-                  )}
-                </>
+          )}
+          {!isLoading && (
+            <>
+              {user ? (
+                <a
+                  href="/api/auth/logout"
+                  className="block bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors text-center"
+                >
+                  Logout
+                </a>
+              ) : (
+                <a
+                  href="/api/auth/login"
+                  className="block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors text-center"
+                >
+                  Login
+                </a>
               )}
-            </div>
-          </div>
+            </>
+          )}
         </div>
-      </div>
+      )}
     </nav>
   );
 }
