@@ -6,9 +6,7 @@ export default withMiddlewareAuthRequired({
 
 export const config = {
   matcher: [
-    '/property-management/:path*',
     '/dashboard/:path*',
-    '/settings/:path*',
     '/api/private/:path*',
   ],
 };
