@@ -1,10 +1,12 @@
 import { withMiddlewareAuthRequired } from '@auth0/nextjs-auth0/edge';
 
-// Temporarily disable auth middleware for development
-export default function middleware() {
-  return;
-}
+// Only protect dashboard routes initially
+export default withMiddlewareAuthRequired({
+  returnTo: '/api/auth/login',
+});
 
 export const config = {
-  matcher: []
+  matcher: [
+    '/dashboard/:path*',
+  ],
 };
