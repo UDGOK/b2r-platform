@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { useRouter } from 'next/navigation';
 
-const HOME_ASSISTANT_URL = process.env.NEXT_PUBLIC_HOME_ASSISTANT_URL || 'http://192.168.1.101:8123';
+const HOME_ASSISTANT_URL = 'http://192.168.1.101:8123';
 const HA_TOKEN = process.env.NEXT_PUBLIC_HA_TOKEN;
 
 export default function HomeAssistant() {
@@ -13,6 +13,14 @@ export default function HomeAssistant() {
   const [isFrameLoaded, setIsFrameLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [haUrl, setHaUrl] = useState<string | null>(null);
+
+  // Debug log
+  useEffect(() => {
+    console.log('Environment check:', {
+      hasToken: !!HA_TOKEN,
+      url: HOME_ASSISTANT_URL
+    });
+  }, []);
 
   // Protect the route
   useEffect(() => {
