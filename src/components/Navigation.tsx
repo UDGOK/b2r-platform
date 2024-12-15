@@ -18,6 +18,7 @@ export default function Navigation() {
 
   const resourcesMenu = [
     { name: 'About Us', href: '/about' },
+    { name: 'Pricing', href: '/pricing' },
     { name: 'Contact', href: '/contact' },
   ];
 
