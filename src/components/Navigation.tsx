@@ -5,143 +5,143 @@ import { useState } from 'react';
 import { useUser } from '@auth0/nextjs-auth0/client';
 
 export default function Navigation() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, isLoading } = useUser();
 
   return (
-    <nav className="flex items-center justify-between h-20">
-      <Link href="/" className="text-2xl font-bold text-white">
-        B2R Platform
-      </Link>
+    <div className="relative">
+      <nav className="flex items-center justify-between h-20 px-6 bg-white">
+        <Link href="/" className="text-2xl font-bold text-black">
+          B2R Platform
+        </Link>
 
-      {/* Mobile Menu Button */}
-      <button
-        className="lg:hidden text-white"
-        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-      >
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
+        {/* Menu Button */}
+        <button
+          className="flex items-center space-x-2 text-black hover:text-gray-600 transition-colors"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
-          {isMobileMenuOpen ? (
+          <span className="text-sm font-medium">Menu</span>
+          <svg
+            className={`w-4 h-4 transform transition-transform ${isMenuOpen ? 'rotate-180' : ''}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
+              d="M19 9l-7 7-7-7"
             />
-          ) : (
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          )}
-        </svg>
-      </button>
+          </svg>
+        </button>
+      </nav>
 
-      {/* Desktop Menu */}
-      <div className="hidden lg:flex items-center space-x-8">
-        <Link 
-          href="/property-management" 
-          className="text-white hover:text-blue-500 transition-colors"
-        >
-          Property Management
-        </Link>
-        <Link 
-          href="/student-experience" 
-          className="text-white hover:text-blue-500 transition-colors"
-        >
-          Student Experience
-        </Link>
-        <Link 
-          href="/business-intelligence" 
-          className="text-white hover:text-blue-500 transition-colors"
-        >
-          Business Intelligence
-        </Link>
-        {user && (
-          <Link 
-            href="/management" 
-            className="text-white hover:text-blue-500 transition-colors"
-          >
-            Management Portal
-          </Link>
-        )}
-        {!isLoading && (
-          <>
-            {user ? (
-              <a
-                href="/api/auth/logout"
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
-              >
-                Logout
-              </a>
-            ) : (
-              <a
-                href="/api/auth/login"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
-              >
-                Login
-              </a>
-            )}
-          </>
-        )}
-      </div>
+      {/* Dropdown Menu */}
+      {isMenuOpen && (
+        <div className="absolute top-20 left-0 right-0 bg-white shadow-lg z-50">
+          <div className="container mx-auto px-6 py-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* Column 1 */}
+              <div>
+                <h3 className="text-black font-semibold mb-4 text-lg">Property Solutions</h3>
+                <div className="space-y-3">
+                  <Link 
+                    href="/property-management" 
+                    className="block text-gray-600 hover:text-black transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Property Management
+                  </Link>
+                  <Link 
+                    href="/student-experience" 
+                    className="block text-gray-600 hover:text-black transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Student Experience
+                  </Link>
+                  <Link 
+                    href="/business-intelligence" 
+                    className="block text-gray-600 hover:text-black transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Business Intelligence
+                  </Link>
+                </div>
+              </div>
 
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="lg:hidden absolute top-20 left-0 right-0 bg-gray-900 py-4 px-6 space-y-4">
-          <Link 
-            href="/property-management"
-            className="block text-white hover:text-blue-500 transition-colors"
-          >
-            Property Management
-          </Link>
-          <Link 
-            href="/student-experience"
-            className="block text-white hover:text-blue-500 transition-colors"
-          >
-            Student Experience
-          </Link>
-          <Link 
-            href="/business-intelligence"
-            className="block text-white hover:text-blue-500 transition-colors"
-          >
-            Business Intelligence
-          </Link>
-          {user && (
-            <Link 
-              href="/management"
-              className="block text-white hover:text-blue-500 transition-colors"
-            >
-              Management Portal
-            </Link>
-          )}
-          {!isLoading && (
-            <>
-              {user ? (
-                <a
-                  href="/api/auth/logout"
-                  className="block bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors text-center"
-                >
-                  Logout
-                </a>
-              ) : (
-                <a
-                  href="/api/auth/login"
-                  className="block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors text-center"
-                >
-                  Login
-                </a>
-              )}
-            </>
-          )}
+              {/* Column 2 */}
+              <div>
+                <h3 className="text-black font-semibold mb-4 text-lg">Resources</h3>
+                <div className="space-y-3">
+                  {user && (
+                    <Link 
+                      href="/management" 
+                      className="block text-gray-600 hover:text-black transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Management Portal
+                    </Link>
+                  )}
+                  <Link 
+                    href="/about" 
+                    className="block text-gray-600 hover:text-black transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    About Us
+                  </Link>
+                  <Link 
+                    href="/contact" 
+                    className="block text-gray-600 hover:text-black transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Contact
+                  </Link>
+                </div>
+              </div>
+
+              {/* Column 3 - Auth */}
+              <div>
+                <h3 className="text-black font-semibold mb-4 text-lg">Account</h3>
+                <div className="space-y-3">
+                  {!isLoading && (
+                    <>
+                      {user ? (
+                        <>
+                          <span className="block text-gray-600">Welcome, {user.name}</span>
+                          <a
+                            href="/api/auth/logout"
+                            className="inline-block bg-black text-white px-6 py-2 rounded hover:bg-gray-800 transition-colors"
+                            onClick={() => setIsMenuOpen(false)}
+                          >
+                            Logout
+                          </a>
+                        </>
+                      ) : (
+                        <a
+                          href="/api/auth/login"
+                          className="inline-block bg-black text-white px-6 py-2 rounded hover:bg-gray-800 transition-colors"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          Login
+                        </a>
+                      )}
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
-    </nav>
+
+      {/* Overlay */}
+      {isMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-40"
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
+    </div>
   );
 }
