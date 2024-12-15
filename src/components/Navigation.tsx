@@ -23,7 +23,10 @@ export default function Navigation() {
   ];
 
   if (user) {
-    resourcesMenu.unshift({ name: 'Management Portal', href: '/management' });
+    resourcesMenu.unshift(
+      { name: 'Home Assistant', href: '/home-assistant' },
+      { name: 'Management Portal', href: '/management' }
+    );
   }
 
   // Close mobile menu when clicking outside
