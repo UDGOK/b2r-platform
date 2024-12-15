@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import {
   BoltIcon,
   FireIcon,
-  WaterIcon,
+  BeakerIcon as WaterIcon,  // Using BeakerIcon as WaterIcon since there's no WaterIcon
   ArrowTrendingUpIcon,
   ArrowTrendingDownIcon,
   ChartBarIcon,
