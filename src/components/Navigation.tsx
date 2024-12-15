@@ -45,6 +45,24 @@ export default function Navigation() {
 
       {/* Desktop Menu */}
       <div className="hidden lg:flex items-center space-x-8">
+        <Link 
+          href="/property-management" 
+          className="text-white hover:text-blue-500 transition-colors"
+        >
+          Property Management
+        </Link>
+        <Link 
+          href="/student-experience" 
+          className="text-white hover:text-blue-500 transition-colors"
+        >
+          Student Experience
+        </Link>
+        <Link 
+          href="/business-intelligence" 
+          className="text-white hover:text-blue-500 transition-colors"
+        >
+          Business Intelligence
+        </Link>
         {user && (
           <Link 
             href="/management" 
@@ -77,6 +95,24 @@ export default function Navigation() {
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="lg:hidden absolute top-20 left-0 right-0 bg-gray-900 py-4 px-6 space-y-4">
+          <Link 
+            href="/property-management"
+            className="block text-white hover:text-blue-500 transition-colors"
+          >
+            Property Management
+          </Link>
+          <Link 
+            href="/student-experience"
+            className="block text-white hover:text-blue-500 transition-colors"
+          >
+            Student Experience
+          </Link>
+          <Link 
+            href="/business-intelligence"
+            className="block text-white hover:text-blue-500 transition-colors"
+          >
+            Business Intelligence
+          </Link>
           {user && (
             <Link 
               href="/management"
